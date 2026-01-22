@@ -3,15 +3,16 @@ import Chatboticon from "../chatboticon/chatboticon";
 import Chatform from "../chatform/chatform";
 import ChatMessage from "../ChatMessage/chatMessage";
 import "./chatbot.css";
+import { companyInfo } from "../companyInfo/companyInfo";
 
 const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 const API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
 const Chatbot = () => {
-  const [chatHistory, setChatHistory] = useState([]);
+  const [chatHistory, setChatHistory] = useState([]); // empty initially
+  const [showChatbot, setShowChatbot] = useState(false);
   const chatBodyRef = useRef(null);
 
-  // update chat history with bot message
   const updateHistory = (text) => {
     setChatHistory((prev) => [
       ...prev.filter((msg) => msg.text !== "Thinking..."),
@@ -19,7 +20,6 @@ const Chatbot = () => {
     ]);
   };
 
-  // MAIN FUNCTION USED BY Chatform
   const generateBotResponse = async (history) => {
     const lastUserMessage = [...history]
       .reverse()
@@ -33,80 +33,65 @@ const Chatbot = () => {
         headers: {
           Authorization: `Bearer ${OPENROUTER_API_KEY}`,
           "Content-Type": "application/json",
-          "HTTP-Referer": "http://localhost:5173",
-          "X-Title": "React Chatbot",
         },
         body: JSON.stringify({
           model: "openai/gpt-3.5-turbo",
           messages: [
-            {
-              role: "user",
-              content: lastUserMessage.text,
-            },
+            // inject companyInfo as context
+            { role: "system", content: companyInfo },
+            { role: "user", content: lastUserMessage.text },
           ],
-          temperature: 0.7,
-          max_tokens: 800,
         }),
       });
 
       const data = await response.json();
-
-      if (!response.ok) {
-        console.error("OpenRouter API error:", data);
-        updateHistory("Something went wrong 😢");
-        return;
-      }
-
-      const botText =
-        data?.choices?.[0]?.message?.content || "No response from AI";
-
-      updateHistory(botText.trim());
-    } catch (error) {
-      console.error("Fetch error:", error);
+      updateHistory(data?.choices?.[0]?.message?.content || "No response");
+    } catch {
       updateHistory("Something went wrong 😢");
     }
   };
 
-  // auto-scroll on new message
   useEffect(() => {
     if (!chatBodyRef.current) return;
-    chatBodyRef.current.scrollTo({
-      top: chatBodyRef.current.scrollHeight,
-      behavior: "smooth",
-    });
+    chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
   }, [chatHistory]);
 
   return (
-    <div className="container">
+    <div className={`container ${showChatbot ? "show-chatbot" : ""}`}>
+      {/* TOGGLER */}
+      <button
+        id="chatbot-toggler"
+        type="button"
+        onClick={() => setShowChatbot((prev) => !prev)}
+      >
+        <span className="material-symbols-rounded">mode_comment</span>
+        <span className="material-symbols-rounded">close</span>
+      </button>
+
+      {/* POPUP */}
       <div className="chatbot-popup">
-        {/* Header */}
         <div className="chat-header">
           <div className="header-info">
             <Chatboticon />
             <h2 className="logo-text">chatbot</h2>
           </div>
-          <button className="material-symbols-rounded">
+
+          {/* CLOSE BUTTON */}
+          <button
+            type="button"
+            className="material-symbols-rounded"
+            onClick={() => setShowChatbot(false)}
+          >
             keyboard_arrow_down
           </button>
         </div>
 
-        {/* Body */}
         <div ref={chatBodyRef} className="chat-body">
-          <div className="message bot-message">
-            <Chatboticon />
-            <p className="message-text">
-              hey there!
-              <br />
-              how can i help you today?
-            </p>
-          </div>
-
           {chatHistory.map((chat, index) => (
             <ChatMessage key={index} chat={chat} />
           ))}
         </div>
 
-        {/* Footer */}
         <div className="chat-footer">
           <Chatform
             chatHistory={chatHistory}
