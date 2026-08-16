@@ -1,16 +1,108 @@
-# React + Vite
+# 🤖 AI Chatbot
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive AI chatbot web application designed to provide users with a simple and engaging conversational experience.
 
-Currently, two official plugins are available:
+The project focuses on building a responsive chat interface, handling user messages, communicating with an AI API, and displaying generated responses in real time.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 📸 Screenshots
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 💬 Chat Interface
 
-## Expanding the ESLint configuration
+![Chat Interface](screenshots/chat.png)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 🤖 AI Conversation
+
+![AI Conversation](screenshots/conversation.png)
+
+---
+
+## ✨ Features
+
+* 💬 Interactive chat interface
+* 🤖 AI-generated responses
+* ⚡ Real-time message interaction
+* 📝 User message input and response display
+* 📱 Responsive design
+* 🔄 Conversation state management
+* ⏳ Loading state while generating responses
+* ❌ Error handling for failed requests
+* 🧹 Clear and simple user interface
+
+---
+
+## 🛠️ Technology Stack
+
+| Frontend   | AI & API        | Tools        |
+| ---------- | --------------- | ------------ |
+| React.js   | AI API          | Vite         |
+| JavaScript | REST API        | Git & GitHub |
+| HTML5      | API Integration | CSS3         |
+
+---
+
+## 🏗️ Application Flow
+
+```text
+User
+  │
+  ▼
+Chat Interface
+  │
+  ▼
+React Application
+  │
+  ▼
+AI API
+  │
+  ▼
+Generated Response
+  │
+  ▼
+Chat Interface
+```
+
+---
+
+## 💻 Run Locally
+
+```bash
+git clone YOUR_REPOSITORY_URL
+cd YOUR_PROJECT_FOLDER
+npm install
+npm run dev
+```
+
+Create the required environment variables for your AI API.
+
+Example:
+
+```env
+VITE_AI_API_KEY=your_api_key
+```
+
+> ⚠️ Never commit API keys or `.env` files to GitHub.
+
+---
+
+## 📚 What I Practiced
+
+* React component development
+* API integration
+* Asynchronous JavaScript
+* State management
+* Handling loading and error states
+* Responsive UI development
+* Environment variable management
+* Git and GitHub
+
+---
+
+## 👨‍💻 Developer
+
+**Eyosiyas Hailemichael**
+
+Junior Full-Stack Developer
+
+🔗 GitHub: https://github.com/eyosi-ai-leader
